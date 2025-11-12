@@ -1,16 +1,19 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Step Counter App</title>
     <link rel="manifest" href="/manifest.json" /> 
-    
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <link rel="apple-touch-icon" href="/icon-192.png" /> 
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
+
     <script>
         tailwind.config = {
             theme: {
@@ -18,6 +21,7 @@
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
                     },
+
                     colors: {
                         'primary': '#4f46e5',
                         'secondary': '#6366f1',
@@ -26,12 +30,14 @@
             }
         }
     </script>
+
     <style>
         /* Custom styles for better mobile appeal */
         body {
             background-color: #f3f4f6;
             font-family: 'Inter', sans-serif;
         }
+
         .counter-display {
             display: flex;
             align-items: center;
@@ -45,28 +51,30 @@
             color: white;
             transition: transform 0.3s ease-in-out;
         }
+
         .counter-display.running {
             box-shadow: 0 0 0 10px rgba(79, 70, 229, 0.3);
             animation: pulse 2s infinite;
         }
+
         @keyframes pulse {
             0% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.4); }
             70% { box-shadow: 0 0 0 15px rgba(79, 70, 229, 0); }
             100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); }
         }
+
         .main-button {
             transition: all 0.15s ease-in-out;
         }
+
         .main-button:active {
             transform: scale(0.98);
         }
     </style>
 </head>
 <body class="p-4 flex flex-col min-h-screen">
-
     <div class="max-w-md w-full mx-auto">
         <h1 class="text-3xl font-extrabold text-center text-gray-800 mb-8 mt-4">🏃 Step Tracker</h1>
-
         <div id="counterDisplay" class="counter-display mb-10 running">
             <span id="steps" class="text-7xl font-bold">0</span>
         </div>
@@ -80,6 +88,7 @@
                     class="main-button w-full px-6 py-4 bg-primary text-white text-lg font-semibold rounded-xl shadow-lg hover:bg-secondary focus:outline-none focus:ring-4 focus:ring-primary/50 transition-colors duration-150">
                 Start Tracking
             </button>
+
             <button id="resetButton" onclick="resetCounter()"
                     class="main-button px-6 py-4 bg-gray-300 text-gray-800 text-lg font-semibold rounded-xl shadow-lg hover:bg-gray-400 focus:outline-none focus:ring-4 focus:ring-gray-300/50 transition-colors duration-150">
                 Reset
@@ -90,6 +99,7 @@
             <p class="font-bold">Permissions Required</p>
             <p class="text-sm">Please allow motion sensor access when prompted to enable step counting.</p>
         </div>
+
         <div id="notSupportedBox" class="mt-8 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 rounded-lg hidden">
             <p class="font-bold">Feature Not Supported</p>
             <p class="text-sm">Device motion sensors are not supported on this browser or device.</p>
@@ -98,10 +108,9 @@
 
     <script>
         // --- Core JavaScript Logic ---
-
         // Sensor Constants
         const ACCELERATION_THRESHOLD = 2.0; // Threshold for Z-axis acceleration to register a step
-        const STEP_DEBOUNCE_TIME = 250;    // Milliseconds to wait before registering another step
+        const STEP_DEBOUNCE_TIME = 200;    // Milliseconds to wait before registering another step
 
         // DOM Elements
         const stepsElement = document.getElementById('steps');
@@ -121,6 +130,7 @@
         /**
          * Checks browser support and handles iOS/Safari permission request on click.
          */
+
         async function requestSensorAccess() {
             if (isRunning) {
                 // If already running, treat the button click as a stop command
@@ -141,7 +151,6 @@
                 try {
                     const permissionState = await DeviceMotionEvent.requestPermission();
                     warningBox.classList.add('hidden');
-
                     if (permissionState === 'granted') {
                         toggleCounting(true);
                     } else {
@@ -164,20 +173,17 @@
          * We look for significant changes in the Z-axis (up/down movement).
          * @param {DeviceMotionEvent} event
          */
+
         function handleDeviceMotion(event) {
             if (!isRunning) return;
-
             // Use accelerationIncludingGravity for robust detection
             const currentZ = event.accelerationIncludingGravity.z;
             const timeNow = Date.now();
-
             // Calculate the change in acceleration
             const deltaZ = currentZ - lastZ;
-
             // Check for a sharp acceleration change (a 'step')
             // And ensure the step is sufficiently spaced in time (debounce)
             if (Math.abs(deltaZ) > ACCELERATION_THRESHOLD && (timeNow - lastStepTime) > STEP_DEBOUNCE_TIME) {
-
                 // Simple peak detection: We just need to register a significant change.
                 stepCount++;
                 stepsElement.textContent = stepCount;
@@ -192,9 +198,9 @@
          * Starts or stops the step counting process.
          * @param {boolean} forceStart Optional: if true, forces the start state.
          */
+
         function toggleCounting(forceStart = null) {
             const shouldRun = forceStart !== null ? forceStart : !isRunning;
-
             if (shouldRun) {
                 // Start Tracking
                 window.addEventListener('devicemotion', handleDeviceMotion);
@@ -219,6 +225,7 @@
         /**
          * Resets the step counter and display.
          */
+
         function resetCounter() {
             if (isRunning) {
                 toggleCounting(false); // Stop tracking first
@@ -231,17 +238,35 @@
         }
 
         // Add a global error handler for unsupported features if necessary
+
         window.addEventListener('error', (e) => {
             console.error("An error occurred:", e.message);
         });
 
-        // --- Important Note for Firebase/Canvas Environment ---
-        // While this is a sensor-based app and doesn't use Firestore,
-        // the required boilerplate variables must still be defined for the environment.
+        // -----------------------------------------------------------------
+        // 🚀 PWA Service Worker Registration - ADDED CODE HERE
+        // -----------------------------------------------------------------
+        function registerServiceWorker() {
+            if ('serviceWorker' in navigator) {
+                // Wait until the window loads to prevent blocking the main thread
+                window.addEventListener('load', () => {
+                    // Register the service worker located at the root of the app
+                    navigator.serviceWorker.register('/sw.js')
+                    .then(reg => {
+                        console.log('Service Worker registered! Scope:', reg.scope);
+                    })
+                    .catch(err => {
+                        console.warn('Service Worker registration failed:', err);
+                    });
+                });
+            }
+        }
+
+        registerServiceWorker();
+        // --- Existing boilerplate variables below ---
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
         const __initial_auth_token = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
     </script>
 </body>
 </html>
-
