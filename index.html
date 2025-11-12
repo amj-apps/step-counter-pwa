@@ -247,7 +247,7 @@
         function registerServiceWorker() {
             if ('serviceWorker' in navigator) {
                 // Register the service worker immediately for best performance.
-                navigator.serviceWorker.register('/sw.js')
+                navigator.serviceWorker.register('/step-counter-pwa/sw.js', { scope: '/step-counter-pwa/' })
                 .then(reg => {
                     console.log('Service Worker registered! Scope:', reg.scope);
                 })
