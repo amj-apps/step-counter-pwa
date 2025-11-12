@@ -7,10 +7,7 @@ const FILES_TO_CACHE = [
   '/index.html',
   '/manifest.json',
   '/icon-192.png', 
-  // 👇 ADD the external script's URL to be cached
   'https://cdn.tailwindcss.com', 
-  // Your code also uses an icon-512.png which is not explicitly linked in the HTML,
-  // but it should also be cached if it exists:
   '/icon-512.png'
 ];
 
@@ -43,7 +40,6 @@ self.addEventListener('activate', (event) => {
 
 // 3. Fetch event: Serves content from cache first, then falls back to network
 self.addEventListener('fetch', (event) => {
-  // We only intercept requests that we know can be served from the cache
   if (event.request.mode === 'navigate' || FILES_TO_CACHE.some(url => event.request.url.includes(url))) {
     event.respondWith(
       caches.match(event.request).then((cachedResponse) => {
