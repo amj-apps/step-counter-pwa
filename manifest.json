@@ -10,12 +10,12 @@
   
   "icons": [
     {
-      "src": "/step-counter-pwa/icon-192.png", // <-- ADD REPO NAME
+      "src": "/step-counter-pwa/icon-192.png", // <-- REPO NAME
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/step-counter-pwa/icon-512.png", // <-- ADD REPO NAME
+      "src": "/step-counter-pwa/icon-512.png", // <-- REPO NAME
       "sizes": "512x512",
       "type": "image/png"
     }
