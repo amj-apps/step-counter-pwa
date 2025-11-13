@@ -33,7 +33,7 @@
     </script>
 
     <style>
-        /* Custom styles for better mobile appeal */
+        /* Styles for better mobile apps */
         body {
             background-color: #f3f4f6;
             font-family: 'Inter', sans-serif;
@@ -63,7 +63,7 @@
             70% { box-shadow: 0 0 0 15px rgba(79, 70, 229, 0); }
             100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); }
         }
-
+        
         .main-button {
             transition: all 0.15s ease-in-out;
         }
@@ -73,6 +73,7 @@
         }
     </style>
 </head>
+    
 <body class="p-4 flex flex-col min-h-screen">
     <div class="max-w-md w-full mx-auto">
         <h1 class="text-3xl font-extrabold text-center text-gray-800 mb-8 mt-4">🏃 Step Tracker</h1>
@@ -86,12 +87,12 @@
 
         <div class="flex space-x-4">
             <button id="startButton" onclick="requestSensorAccess()"
-                    class="main-button w-full px-6 py-4 bg-primary text-white text-lg font-semibold rounded-xl shadow-lg hover:bg-secondary focus:outline-none focus:ring-4 focus:ring-primary/50 transition-colors duration-150">
+                class="main-button w-full px-6 py-4 bg-primary text-white text-lg font-semibold rounded-xl shadow-lg hover:bg-secondary focus:outline-none focus:ring-4 focus:ring-primary/50 transition-colors duration-150">
                 Start Tracking
             </button>
 
             <button id="resetButton" onclick="resetCounter()"
-                    class="main-button px-6 py-4 bg-gray-300 text-gray-800 text-lg font-semibold rounded-xl shadow-lg hover:bg-gray-400 focus:outline-none focus:ring-4 focus:ring-gray-300/50 transition-colors duration-150">
+                class="main-button px-6 py-4 bg-gray-300 text-gray-800 text-lg font-semibold rounded-xl shadow-lg hover:bg-gray-400 focus:outline-none focus:ring-4 focus:ring-gray-300/50 transition-colors duration-150">
                 Reset
             </button>
         </div>
@@ -108,10 +109,11 @@
     </div>
 
     <script>
-        // --- Core JavaScript Logic ---
+        
+        // --- Core Logic ---
         // Sensor Constants
         const ACCELERATION_THRESHOLD = 1.0; // Threshold for Z-axis acceleration to register a step
-        const STEP_DEBOUNCE_TIME = 200;    // Milliseconds to wait before registering another step
+        const STEP_DEBOUNCE_TIME = 250;    // Milliseconds to wait before registering another step
 
         // DOM Elements
         const stepsElement = document.getElementById('steps');
@@ -129,7 +131,7 @@
         let lastZ = 0;
 
         /**
-         * Checks browser support and handles iOS/Safari permission request on click.
+         * Checks support and handles permission request on click.
          */
 
         async function requestSensorAccess() {
@@ -170,8 +172,8 @@
         }
 
         /**
-         * The core logic for detecting steps based on device acceleration.
-         * We look for significant changes in the Z-axis (up/down movement).
+         * Detecting steps based on device acceleration.
+         * Look for significant changes in the Z-axis (up/down movement).
          * @param {DeviceMotionEvent} event
          */
 
@@ -190,7 +192,6 @@
                 stepsElement.textContent = stepCount;
                 lastStepTime = timeNow;
             }
-
             // Update the last Z value for the next calculation
             lastZ = currentZ;
         }
@@ -244,7 +245,7 @@
             console.error("An error occurred:", e.message);
         });
 
-        // --- PWA Service Worker Registration - ADDED CODE HERE
+        // --- PWA Service Worker Registration -
         function registerServiceWorker() {
             if ('serviceWorker' in navigator) {
                 // Register the service worker immediately for best performance.
