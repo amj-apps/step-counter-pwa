@@ -1,5 +1,5 @@
 // A static name for your cache
-const CACHE_NAME = 'step-counter-v5'; 
+const CACHE_NAME = 'step-counter-v6'; // Updated cache version for new files
 
 // List of files to cache during installation
 const FILES_TO_CACHE = [
@@ -9,6 +9,8 @@ const FILES_TO_CACHE = [
   './icon-192.png',  
   './icon-512.png',
   './output.css',
+  './custom.css', // NEW file added
+  './app.js',     // NEW file added
 ];
 
 // 1. Install event: Caches the essential app shell assets
@@ -49,4 +51,3 @@ self.addEventListener('fetch', (event) => {
     );
   }
 });
-
