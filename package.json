@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "build-css": "node ./node_modules/tailwindcss/dist/lib.js -i ./input.css -o ./output.css --minify"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.22",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.17"
+  }
+}
