@@ -77,6 +77,7 @@
 <body class="p-4 flex flex-col min-h-screen">
     <div class="max-w-md w-full mx-auto">
         <h1 class="text-3xl font-extrabold text-center text-gray-800 mb-8 mt-4">🏃 Step Tracker</h1>
+        <div id="dateTimeDisplay" class="text-center text-sm font-medium text-gray-500 mb-4"></div>
         <div id="counterDisplay" class="counter-display mb-10 running">
             <span id="steps" class="text-7xl font-bold">0</span>
         </div>
@@ -109,6 +110,34 @@
     </div>
 
     <script>
+
+    // --- NEW REAL-TIME CLOCK LOGIC ---
+    const dateTimeDisplay = document.getElementById('dateTimeDisplay');
+
+    /**
+    * Updates the date and time display every second.
+    */
+    function updateDateTime() {
+        const now = new Date();
+        
+        // Options for date formatting
+        const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const dateString = now.toLocaleDateString(undefined, dateOptions);
+        
+        // Options for time formatting (includes seconds)
+        const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
+        const timeString = now.toLocaleTimeString(undefined, timeOptions);
+        
+        // Combine and display
+        dateTimeDisplay.innerHTML = `${dateString} | ${timeString}`;
+    }
+
+    // Start the clock and update it every 1000ms (1 second)
+    setInterval(updateDateTime, 1000);
+
+    // Initial call to display the time immediately
+    updateDateTime();
+    // --- END NEW REAL-TIME CLOCK LOGIC ---
         
         // --- Core Logic ---
         // Sensor Constants
