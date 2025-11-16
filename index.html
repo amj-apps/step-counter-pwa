@@ -7,30 +7,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Step Counter App</title>
-    <link rel="manifest" href="/step-counter-pwa/manifest.json" /> 
+    <link rel="manifest" href="./manifest.json" /> 
     
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <link rel="apple-touch-icon" href="./icon-192.png" /> 
 
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-
-                    colors: {
-                        'primary': '#4f46e5',
-                        'secondary': '#6366f1',
-                    }
-                }
-            }
-        }
-    </script>
+    <link rel="stylesheet" href="./output.css"> 
 
     <style>
         /* Styles for better mobile apps */
@@ -64,6 +47,24 @@
             100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); }
         }
         
+        .main-button {
+            transition: all 0.15s ease-in-out;
+        }
+        
+        .main-button:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+    
+<body class="p-4 flex flex-col min-h-screen">
+    <div class="max-w-md w-full mx-auto">
+        <h1 class="text-3xl font-extrabold text-center text-gray-800 mb-8 mt-4">🏃 Step Tracker</h1>
+        <div id="dateTimeDisplay" class="text-center text-sm font-medium text-gray-500 mb-4"></div>
+        <div id="counterDisplay" class="counter-display mb-10 running">
+            <span id="steps" class="text-7xl font-bold">0</span>
+        </div>
+        
         <div class="mt-8 flex justify-center space-x-6 p-4 bg-white rounded-xl shadow-lg">
             
             <div class="text-center">
@@ -79,26 +80,7 @@
             </div>
             
         </div>
-
-        .main-button {
-            transition: all 0.15s ease-in-out;
-        }
-
-        .main-button:active {
-            transform: scale(0.98);
-        }
-    </style>
-</head>
-    
-<body class="p-4 flex flex-col min-h-screen">
-    <div class="max-w-md w-full mx-auto">
-        <h1 class="text-3xl font-extrabold text-center text-gray-800 mb-8 mt-4">🏃 Step Tracker</h1>
-        <div id="dateTimeDisplay" class="text-center text-sm font-medium text-gray-500 mb-4"></div>
-        <div id="counterDisplay" class="counter-display mb-10 running">
-            <span id="steps" class="text-7xl font-bold">0</span>
-        </div>
-
-        <div class="text-center mb-6 h-12">
+        <div class="text-center mb-6 h-12 mt-8"> 
             <p id="statusMessage" class="text-sm font-medium text-gray-600">Press 'Start' to begin tracking.</p>
         </div>
 
@@ -154,6 +136,11 @@
     // Initial call to display the time immediately
     updateDateTime();
     // --- END NEW REAL-TIME CLOCK LOGIC ---
+
+    // --- NEW DISTANCE AND DURATION LOGIC ---
+
+    // Constants for calculation
+    const STEP_LENGTH_M = 0.76; // Average adult step length in meters
 
     // Element References
     const distanceElement = document.getElementById('distanceDisplay');
@@ -327,6 +314,8 @@
             durationSeconds = 0;
             lastStepTime = 0;
             stepsElement.textContent = 0;
+            distanceElement.textContent = '0.00';
+            durationElement.textContent = '00:00:00';
             statusMessage.textContent = "Counter reset. Press 'Start' to begin tracking.";
             console.log("Step counter reset.");
         }
@@ -340,8 +329,8 @@
         // --- PWA Service Worker Registration -
         function registerServiceWorker() {
             if ('serviceWorker' in navigator) {
-                // Register the service worker immediately for best performance.
-                navigator.serviceWorker.register('/step-counter-pwa/sw.js', { scope: '/step-counter-pwa/' })
+                // FIX 4: Changed absolute path to relative path
+                navigator.serviceWorker.register('./sw.js', { scope: './' })
                 .then(reg => {
                     console.log('Service Worker registered! Scope:', reg.scope);
                 })
