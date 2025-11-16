@@ -7,13 +7,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Step Counter App</title>
-    <link rel="manifest" href="./manifest.json" />
+    <link rel="manifest" href="/step-counter-pwa/manifest.json" /> 
     
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <link rel="apple-touch-icon" href="./icon-192.png" />
+    <link rel="apple-touch-icon" href="./icon-192.png" /> 
 
-    <link rel="stylesheet" href="./output.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+
+                    colors: {
+                        'primary': '#4f46e5',
+                        'secondary': '#6366f1',
+                    }
+                }
+            }
+        }
+    </script>
 
     <style>
         /* Styles for better mobile apps */
@@ -232,7 +249,7 @@
         function registerServiceWorker() {
             if ('serviceWorker' in navigator) {
                 // Register the service worker immediately for best performance.
-                navigator.serviceWorker.register('./sw.js', { scope: './' })
+                navigator.serviceWorker.register('/step-counter-pwa/sw.js', { scope: '/step-counter-pwa/' })
                 .then(reg => {
                     console.log('Service Worker registered! Scope:', reg.scope);
                 })

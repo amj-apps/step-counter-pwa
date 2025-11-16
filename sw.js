@@ -3,11 +3,12 @@ const CACHE_NAME = 'step-counter-v1';
 
 // List of files to cache during installation
 const FILES_TO_CACHE = [
-  './', // Change '/' to './' for the root
-  './index.html', // Changed from '/index.html'
-  './manifest.json', // Changed from '/manifest.json'
-  './icon-192.png', // Changed from '/icon-192.png'
-  './output.css', 
+  './', 
+  './index.html',
+  './manifest.json',
+  './icon-192.png',  
+  './icon-512.png',
+  './output.css',
 ];
 
 // 1. Install event: Caches the essential app shell assets
@@ -48,3 +49,4 @@ self.addEventListener('fetch', (event) => {
     );
   }
 });
+
