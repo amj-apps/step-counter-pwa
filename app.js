@@ -163,6 +163,9 @@ function handleDeviceMotion(event) {
 
     if (Math.abs(deltaZ) > ACCELERATION_THRESHOLD && (timeNow - lastStepTime) > STEP_DEBOUNCE_TIME) {
         stepCount++;
+        if (navigator.vibrate) {
+            navigator.vibrate(50); // Vibrate
+        }
         stepsElement.textContent = stepCount;
         const distanceKM = (stepCount * STEP_LENGTH_M) / 1000;
         distanceElement.textContent = distanceKM.toFixed(2);
